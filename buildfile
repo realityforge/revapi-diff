@@ -18,8 +18,6 @@ define 'revapi-diff' do
                :slf4j_api,
                :slf4j_jdk14
 
-  test.using :testng
-
   package(:jar)
   package(:jar, :classifier => 'all').tap do |jar|
     compile.dependencies.each do |d|
