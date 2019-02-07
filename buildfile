@@ -7,7 +7,8 @@ define 'revapi-diff' do
   compile.options.target = '1.8'
   compile.options.lint = 'all'
 
-  compile.with :getopt4j,
+  compile.with :javax_annotation,
+               :getopt4j,
                :revapi,
                :revapi_basic_features,
                :revapi_java_spi,

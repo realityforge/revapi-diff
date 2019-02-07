@@ -3,6 +3,8 @@ repositories:
    - http://repo1.maven.org/maven2
 
 artifacts:
+  javax_annotation: org.realityforge.javax.annotation:javax.annotation:jar:1.0.0
+
   getopt4j: org.realityforge.getopt4j:getopt4j:jar:1.2
 
   revapi: org.revapi:revapi:jar:0.10.2
