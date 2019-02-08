@@ -7,6 +7,8 @@ define 'revapi-diff' do
   compile.options.target = '1.8'
   compile.options.lint = 'all'
 
+  manifest['Main-Class'] = 'org.realityforge.revapi.diff.Main'
+
   compile.with :javax_annotation,
                :getopt4j,
                :revapi,
