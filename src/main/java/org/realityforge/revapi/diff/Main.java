@@ -33,6 +33,7 @@ public class Main
   private static final int OLD_API_SUPPORT_OPT = 4;
   private static final int NEW_API_OPT = 5;
   private static final int NEW_API_SUPPORT_OPT = 6;
+  private static final int OUTPUT_OPT = 'o';
 
   private static final CLOptionDescriptor[] OPTIONS = new CLOptionDescriptor[]{
     new CLOptionDescriptor( "help",
@@ -69,7 +70,11 @@ public class Main
     new CLOptionDescriptor( "new-api-support",
                             CLOptionDescriptor.ARGUMENT_REQUIRED | CLOptionDescriptor.DUPLICATES_ALLOWED,
                             NEW_API_SUPPORT_OPT,
-                            "Specify the path to a jar to referenced by the new-api but not part of the analysis. May be specified multiple times." )
+                            "Specify the path to a jar to referenced by the new-api but not part of the analysis. May be specified multiple times." ),
+    new CLOptionDescriptor( "output-file",
+                            CLOptionDescriptor.ARGUMENT_REQUIRED,
+                            OUTPUT_OPT,
+                            "The output file reporting the API differences." )
   };
 
   private static final int NO_DIFFERENCE_EXIT_CODE = 0;
@@ -105,6 +110,7 @@ public class Main
   private static API.Builder c_oldAPI;
   private static API.Builder c_newAPI;
   private static File c_configFile;
+  private static File c_outputFile;
 
   public static void main( final String[] args )
   {
@@ -279,6 +285,19 @@ public class Main
           c_newAPI.addSupportArchive( new FileArchive( file ) );
           break;
         }
+        case OUTPUT_OPT:
+        {
+          final String argument = option.getArgument();
+          final File file = new File( argument );
+          if ( !file.getParentFile().exists() )
+          {
+            c_logger.log( Level.SEVERE,
+                          "Error: Directory containing output file does not exist: " + file.getParentFile() );
+            return false;
+          }
+          c_outputFile = file;
+          break;
+        }
         case VERBOSE_OPT:
         {
           c_logger.setLevel( Level.ALL );
@@ -304,6 +323,11 @@ public class Main
     else if ( !oldApiAdded )
     {
       c_logger.log( Level.SEVERE, "Error: --old-api not specified" );
+      return false;
+    }
+    else if ( null == c_outputFile )
+    {
+      c_logger.log( Level.SEVERE, "Error: --output-file not specified" );
       return false;
     }
 
