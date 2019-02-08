@@ -251,7 +251,7 @@ public class Main
             c_logger.log( Level.SEVERE, "Error: Specified old api support archive does not exist: " + argument );
             return false;
           }
-          c_oldAPI.addSupportArchive( new FileArchive( file ) );
+          c_oldAPI.addSupportArchive( new LabeledFileArchive( file.getName(), file ) );
           break;
         }
         case NEW_API_OPT:
@@ -264,7 +264,7 @@ public class Main
             c_logger.log( Level.SEVERE, "Error: Specified new api does not exist: " + argument );
             return false;
           }
-          c_newAPI.addArchive( new FileArchive( file ) );
+          c_newAPI.addArchive( new LabeledFileArchive( file.getName(), file ) );
           break;
         }
         case NEW_API_SUPPORT_OPT:
