@@ -67,7 +67,7 @@ public class Main
     new CLOptionDescriptor( "old-api",
                             CLOptionDescriptor.ARGUMENT_REQUIRED | CLOptionDescriptor.DUPLICATES_ALLOWED,
                             OLD_API_OPT,
-                            "Specify the path to a jar to compare against. May be specified multiple times." ),
+                            "Specify the path to a jar to compare against. May be specified multiple times. May also be prefixed with <label>:: so that report is generated with using <label> for archive." ),
     new CLOptionDescriptor( "old-api-support",
                             CLOptionDescriptor.ARGUMENT_REQUIRED | CLOptionDescriptor.DUPLICATES_ALLOWED,
                             OLD_API_SUPPORT_OPT,
@@ -75,7 +75,7 @@ public class Main
     new CLOptionDescriptor( "new-api",
                             CLOptionDescriptor.ARGUMENT_REQUIRED | CLOptionDescriptor.DUPLICATES_ALLOWED,
                             NEW_API_OPT,
-                            "Specify the path to a jar compared by the tool. May be specified multiple times." ),
+                            "Specify the path to a jar compared by the tool. May be specified multiple times. May also be prefixed with <label>:: so that report is generated with using <label> for archive." ),
     new CLOptionDescriptor( "new-api-support",
                             CLOptionDescriptor.ARGUMENT_REQUIRED | CLOptionDescriptor.DUPLICATES_ALLOWED,
                             NEW_API_SUPPORT_OPT,
@@ -343,13 +343,25 @@ public class Main
         {
           oldApiAdded = true;
           final String argument = option.getArgument();
-          final File file = new File( argument );
+          final String name;
+          final File file;
+          final int separatorIndex = argument.indexOf( "::" );
+          if ( -1 != separatorIndex )
+          {
+            name = argument.substring( 0, separatorIndex );
+            file = new File( argument.substring( separatorIndex + 2 ) );
+          }
+          else
+          {
+            file = new File( argument );
+            name = file.getName();
+          }
           if ( !file.exists() )
           {
             c_logger.log( Level.SEVERE, "Error: Specified old api does not exist: " + argument );
             return false;
           }
-          c_oldAPI.addArchive( new FileArchive( file ) );
+          c_oldAPI.addArchive( new LabeledFileArchive( name, file ) );
           break;
         }
         case OLD_API_SUPPORT_OPT:
@@ -368,13 +380,25 @@ public class Main
         {
           newApiAdded = true;
           final String argument = option.getArgument();
-          final File file = new File( argument );
+          final String name;
+          final File file;
+          final int separatorIndex = argument.indexOf( "::" );
+          if ( -1 != separatorIndex )
+          {
+            name = argument.substring( 0, separatorIndex );
+            file = new File( argument.substring( separatorIndex + 2 ) );
+          }
+          else
+          {
+            file = new File( argument );
+            name = file.getName();
+          }
           if ( !file.exists() )
           {
             c_logger.log( Level.SEVERE, "Error: Specified new api does not exist: " + argument );
             return false;
           }
-          c_newAPI.addArchive( new LabeledFileArchive( file.getName(), file ) );
+          c_newAPI.addArchive( new LabeledFileArchive( name, file ) );
           break;
         }
         case NEW_API_SUPPORT_OPT:
