@@ -131,7 +131,7 @@ public class Main
       return;
     }
 
-    boolean difference;
+    final int differenceCount;
     try
     {
       final AnalysisContext analysisContext = buildAnalysisContext();
@@ -140,9 +140,7 @@ public class Main
       final Map<Reporter, AnalysisContext> reporters = analyze.getExtensions().getReporters();
       final CollectorReporter reporter = (CollectorReporter) reporters.keySet().iterator().next();
 
-      final int differenceCount = emitReport( reporter );
-
-      difference = 0 != differenceCount;
+      differenceCount = emitReport( reporter );
     }
     catch ( final Throwable t )
     {
@@ -152,11 +150,11 @@ public class Main
       return;
     }
 
-    if ( difference )
+    if ( 0 != differenceCount )
     {
       if ( c_logger.isLoggable( Level.INFO ) )
       {
-        c_logger.log( Level.SEVERE, "Error: Difference found between APIs" );
+        c_logger.log( Level.SEVERE, differenceCount + " differences found between APIs" );
       }
       System.exit( DIFFERENCE_EXIT_CODE );
     }
