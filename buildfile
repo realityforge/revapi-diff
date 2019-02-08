@@ -11,6 +11,7 @@ define 'revapi-diff' do
 
   compile.with :javax_annotation,
                :getopt4j,
+               :javax_json,
                :revapi,
                :revapi_basic_features,
                :revapi_java_spi,

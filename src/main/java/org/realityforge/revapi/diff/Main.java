@@ -2,6 +2,7 @@ package org.realityforge.revapi.diff;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,8 @@ import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Nonnull;
+import javax.json.Json;
+import javax.json.stream.JsonGenerator;
 import org.realityforge.getopt4j.CLArgsParser;
 import org.realityforge.getopt4j.CLOption;
 import org.realityforge.getopt4j.CLOptionDescriptor;
@@ -16,6 +19,12 @@ import org.realityforge.getopt4j.CLUtil;
 import org.revapi.API;
 import org.revapi.AnalysisContext;
 import org.revapi.AnalysisResult;
+import org.revapi.Archive;
+import org.revapi.CompatibilityType;
+import org.revapi.Difference;
+import org.revapi.DifferenceSeverity;
+import org.revapi.Element;
+import org.revapi.Report;
 import org.revapi.Reporter;
 import org.revapi.Revapi;
 import org.revapi.simple.FileArchive;
@@ -131,7 +140,9 @@ public class Main
       final Map<Reporter, AnalysisContext> reporters = analyze.getExtensions().getReporters();
       final CollectorReporter reporter = (CollectorReporter) reporters.keySet().iterator().next();
 
-      difference = reporter.getReports().stream().anyMatch( r -> !r.getDifferences().isEmpty() );
+      final int differenceCount = emitReport( reporter );
+
+      difference = 0 != differenceCount;
     }
     catch ( final Throwable t )
     {
@@ -157,6 +168,101 @@ public class Main
       }
       System.exit( NO_DIFFERENCE_EXIT_CODE );
     }
+  }
+
+  private static int emitReport( @Nonnull final CollectorReporter reporter )
+    throws IOException
+  {
+    int differenceCount = 0;
+    final List<Report> reports = reporter.getReports();
+    try ( final FileOutputStream output = new FileOutputStream( c_outputFile ) )
+    {
+      final JsonGenerator g = Json.createGenerator( output );
+      differenceCount += emitReports( g, reports );
+      g.flush();
+      g.close();
+    }
+    return differenceCount;
+  }
+
+  private static int emitReports( @Nonnull final JsonGenerator g, @Nonnull final List<Report> reports )
+  {
+    int differenceCount = 0;
+    g.writeStartArray();
+    for ( final Report report : reports )
+    {
+      final List<Difference> differences = report.getDifferences();
+      for ( final Difference difference : differences )
+      {
+        emitDifference( g, report, difference );
+        differenceCount++;
+      }
+    }
+    g.writeEnd();
+    return differenceCount;
+  }
+
+  private static void emitDifference( @Nonnull final JsonGenerator g,
+                                      @Nonnull final Report report,
+                                      @Nonnull final Difference difference )
+  {
+    g.writeStartObject();
+    g.write( "name", difference.name );
+    g.write( "code", difference.code );
+    g.write( "description", difference.description );
+    final Element newElement = report.getNewElement();
+    if ( null != newElement )
+    {
+      final Archive archive = newElement.getArchive();
+      g.write( "newElement", newElement.getFullHumanReadableString() );
+      if ( null != archive )
+      {
+        g.write( "newElementModule", archive.getName() );
+      }
+      else
+      {
+        g.writeNull( "newElementModule" );
+      }
+    }
+    else
+    {
+      g.writeNull( "newElement" );
+      g.writeNull( "newElementModule" );
+    }
+    final Element oldElement = report.getOldElement();
+    if ( null != oldElement )
+    {
+      final Archive archive = oldElement.getArchive();
+      g.write( "oldElement", oldElement.getFullHumanReadableString() );
+      if ( null != archive )
+      {
+        g.write( "oldElementModule", archive.getName() );
+      }
+      else
+      {
+        g.writeNull( "oldElementModule" );
+      }
+    }
+    else
+    {
+      g.writeNull( "oldElement" );
+      g.writeNull( "oldElementModule" );
+    }
+    g.writeStartObject( "classification" );
+    for ( final Map.Entry<CompatibilityType, DifferenceSeverity> entry : difference.classification.entrySet() )
+    {
+      g.write( entry.getKey().name(), entry.getValue().name() );
+    }
+    g.writeEnd();
+
+    g.writeStartObject( "attachments" );
+    for ( final Map.Entry<String, String> entry : difference.attachments.entrySet() )
+    {
+      g.write( entry.getKey(), entry.getValue() );
+    }
+    g.writeEnd();
+
+    g.writeEnd();
   }
 
   @Nonnull

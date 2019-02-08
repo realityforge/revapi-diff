@@ -8,6 +8,8 @@ artifacts:
 
   getopt4j: org.realityforge.getopt4j:getopt4j:jar:1.2
 
+  javax_json: org.glassfish:javax.json:jar:1.1
+
   revapi: org.revapi:revapi:jar:0.10.2
   revapi_basic_features: org.revapi:revapi-basic-features:jar:0.7.4
   revapi_java_spi: org.revapi:revapi-java-spi:jar:0.17.2
