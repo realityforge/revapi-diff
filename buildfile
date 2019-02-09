@@ -1,4 +1,5 @@
 require 'buildr/git_auto_version'
+require 'buildr/gpg'
 
 desc 'revapi-diff: Report differences between Java APIs'
 define 'revapi-diff' do
