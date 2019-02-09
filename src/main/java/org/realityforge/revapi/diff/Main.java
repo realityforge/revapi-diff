@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.ConsoleHandler;
@@ -175,7 +176,9 @@ public class Main
     final List<Report> reports = reporter.getReports();
     try ( final FileOutputStream output = new FileOutputStream( c_outputFile ) )
     {
-      final JsonGenerator g = Json.createGenerator( output );
+      final HashMap<String, Object> config = new HashMap<>();
+      config.put( JsonGenerator.PRETTY_PRINTING, true );
+      final JsonGenerator g = Json.createGeneratorFactory( config ).createGenerator( output );
       differenceCount += emitReports( g, reports );
       g.flush();
       g.close();
