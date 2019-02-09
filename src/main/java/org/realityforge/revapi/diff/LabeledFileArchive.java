@@ -16,7 +16,7 @@ final class LabeledFileArchive
   @Nonnull
   private final File _file;
 
-  public LabeledFileArchive( @Nonnull final String name, @Nonnull final File file )
+  LabeledFileArchive( @Nonnull final String name, @Nonnull final File file )
   {
     _name = Objects.requireNonNull( name );
     _file = Objects.requireNonNull( file );
