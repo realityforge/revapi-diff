@@ -9,6 +9,10 @@ define 'revapi-diff' do
 
   project.version = ENV['PRODUCT_VERSION'] if ENV['PRODUCT_VERSION']
 
+  pom.add_apache_v2_license
+  pom.add_github_project('realityforge/revapi-diff')
+  pom.add_developer('realityforge', 'Peter Donald')
+
   manifest['Main-Class'] = 'org.realityforge.revapi.diff.Main'
 
   compile.with :javax_annotation,
