@@ -396,7 +396,7 @@ public class Main
         {
           final String argument = option.getArgument();
           final File file = new File( argument );
-          if ( !file.getParentFile().exists() )
+          if ( !file.getAbsoluteFile().getParentFile().exists() )
           {
             c_logger.log( Level.SEVERE,
                           "Error: Directory containing output file does not exist: " + file.getParentFile() );
