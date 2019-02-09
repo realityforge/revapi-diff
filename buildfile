@@ -7,6 +7,8 @@ define 'revapi-diff' do
   compile.options.target = '1.8'
   compile.options.lint = 'all'
 
+  project.version = ENV['PRODUCT_VERSION'] if ENV['PRODUCT_VERSION']
+
   manifest['Main-Class'] = 'org.realityforge.revapi.diff.Main'
 
   compile.with :javax_annotation,
