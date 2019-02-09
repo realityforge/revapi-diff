@@ -343,25 +343,13 @@ public class Main
         {
           oldApiAdded = true;
           final String argument = option.getArgument();
-          final String name;
-          final File file;
-          final int separatorIndex = argument.indexOf( "::" );
-          if ( -1 != separatorIndex )
-          {
-            name = argument.substring( 0, separatorIndex );
-            file = new File( argument.substring( separatorIndex + 2 ) );
-          }
-          else
-          {
-            file = new File( argument );
-            name = file.getName();
-          }
-          if ( !file.exists() )
+          final LabeledFileArchive archive = parseArchive( argument );
+          if ( !archive.getFile().exists() )
           {
             c_logger.log( Level.SEVERE, "Error: Specified old api does not exist: " + argument );
             return false;
           }
-          c_oldAPI.addArchive( new LabeledFileArchive( name, file ) );
+          c_oldAPI.addArchive( archive );
           break;
         }
         case OLD_API_SUPPORT_OPT:
@@ -380,25 +368,13 @@ public class Main
         {
           newApiAdded = true;
           final String argument = option.getArgument();
-          final String name;
-          final File file;
-          final int separatorIndex = argument.indexOf( "::" );
-          if ( -1 != separatorIndex )
-          {
-            name = argument.substring( 0, separatorIndex );
-            file = new File( argument.substring( separatorIndex + 2 ) );
-          }
-          else
-          {
-            file = new File( argument );
-            name = file.getName();
-          }
-          if ( !file.exists() )
+          final LabeledFileArchive archive = parseArchive( argument );
+          if ( !archive.getFile().exists() )
           {
             c_logger.log( Level.SEVERE, "Error: Specified new api does not exist: " + argument );
             return false;
           }
-          c_newAPI.addArchive( new LabeledFileArchive( name, file ) );
+          c_newAPI.addArchive( archive );
           break;
         }
         case NEW_API_SUPPORT_OPT:
@@ -460,6 +436,24 @@ public class Main
     }
 
     return true;
+  }
+
+  private static LabeledFileArchive parseArchive( final String argument )
+  {
+    final String name;
+    final File file;
+    final int separatorIndex = argument.indexOf( "::" );
+    if ( -1 != separatorIndex )
+    {
+      name = argument.substring( 0, separatorIndex );
+      file = new File( argument.substring( separatorIndex + 2 ) );
+    }
+    else
+    {
+      file = new File( argument );
+      name = file.getName();
+    }
+    return new LabeledFileArchive( name, file );
   }
 
   /**

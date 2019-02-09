@@ -36,4 +36,10 @@ final class LabeledFileArchive
   {
     return new FileInputStream( _file );
   }
+
+  @Nonnull
+  File getFile()
+  {
+    return _file;
+  }
 }
