@@ -28,6 +28,8 @@ define 'revapi-diff' do
                :slf4j_jdk14
 
   package(:jar)
+  package(:sources)
+  package(:javadoc)
   package(:jar, :classifier => 'all').tap do |jar|
     compile.dependencies.each do |d|
       jar.merge(d)
