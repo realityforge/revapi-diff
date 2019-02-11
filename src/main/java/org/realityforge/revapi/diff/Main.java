@@ -194,6 +194,7 @@ public class Main
       final JsonGenerator g = Json.createGeneratorFactory( config ).createGenerator( output );
       differenceCount += emitReports( g, reports );
       g.flush();
+      output.write( "\n".getBytes() );
       g.close();
     }
     return differenceCount;

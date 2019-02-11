@@ -7,6 +7,7 @@
 * Ensure that the order of the differences in the report are stable and the order of the keys within a
   difference are stable. The purpose is to minimize churn when the differences are committed to version
   control systems.
+* Add a trailing new line to report to avoid warnings from version control tools.
 
 ### [v0.02](https://github.com/realityforge/revapi-diff/tree/v0.02) (2019-02-09)
 [Full Changelog](https://github.com/realityforge/revapi-diff/compare/v0.01...v0.02)
