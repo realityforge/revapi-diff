@@ -43,6 +43,7 @@ public class Main
   private static final int OLD_API_SUPPORT_OPT = 4;
   private static final int NEW_API_OPT = 5;
   private static final int NEW_API_SUPPORT_OPT = 6;
+  private static final int EXPECT_NO_DIFFERENCES_OPT = 7;
   private static final int OUTPUT_OPT = 'o';
 
   private static final CLOptionDescriptor[] OPTIONS = new CLOptionDescriptor[]{
@@ -84,10 +85,14 @@ public class Main
     new CLOptionDescriptor( "output-file",
                             CLOptionDescriptor.ARGUMENT_REQUIRED,
                             OUTPUT_OPT,
-                            "The output file reporting the API differences." )
+                            "The output file reporting the API differences." ),
+    new CLOptionDescriptor( "expect-no-differences",
+                            CLOptionDescriptor.ARGUMENT_DISALLOWED,
+                            EXPECT_NO_DIFFERENCES_OPT,
+                            "Return exit code of 1 if API differences are detected." )
   };
 
-  private static final int NO_DIFFERENCE_EXIT_CODE = 0;
+  private static final int SUCCESS_EXIT_CODE = 0;
   private static final int DIFFERENCE_EXIT_CODE = 1;
   private static final int ERROR_PARSING_ARGS_EXIT_CODE = 2;
   private static final int ERROR_OTHER_EXIT_CODE = 3;
@@ -121,6 +126,7 @@ public class Main
   private static API.Builder c_newAPI;
   private static File c_configFile;
   private static File c_outputFile;
+  private static boolean c_errorOnDifferences;
 
   public static void main( final String[] args )
   {
@@ -157,7 +163,14 @@ public class Main
       {
         c_logger.log( Level.SEVERE, differenceCount + " differences found between APIs" );
       }
-      System.exit( DIFFERENCE_EXIT_CODE );
+      if ( c_errorOnDifferences )
+      {
+        System.exit( DIFFERENCE_EXIT_CODE );
+      }
+      else
+      {
+        System.exit( SUCCESS_EXIT_CODE );
+      }
     }
     else
     {
@@ -165,7 +178,7 @@ public class Main
       {
         c_logger.log( Level.INFO, "No difference found between APIs" );
       }
-      System.exit( NO_DIFFERENCE_EXIT_CODE );
+      System.exit( SUCCESS_EXIT_CODE );
     }
   }
 
@@ -403,6 +416,11 @@ public class Main
             return false;
           }
           c_outputFile = file;
+          break;
+        }
+        case EXPECT_NO_DIFFERENCES_OPT:
+        {
+          c_errorOnDifferences = true;
           break;
         }
         case VERBOSE_OPT:
