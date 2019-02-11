@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.json.Json;
 import javax.json.stream.JsonGenerator;
@@ -23,7 +24,6 @@ import org.revapi.AnalysisResult;
 import org.revapi.Archive;
 import org.revapi.CompatibilityType;
 import org.revapi.Difference;
-import org.revapi.DifferenceSeverity;
 import org.revapi.Element;
 import org.revapi.Report;
 import org.revapi.Reporter;
@@ -205,7 +205,7 @@ public class Main
     g.writeStartArray();
     for ( final Report report : reports )
     {
-      final List<Difference> differences = report.getDifferences();
+      final List<Difference> differences = sort( report );
       for ( final Difference difference : differences )
       {
         emitDifference( g, report, difference );
@@ -214,6 +214,48 @@ public class Main
     }
     g.writeEnd();
     return differenceCount;
+  }
+
+  /**
+   * Sort differences. Order does not matter - just that it is stable so difference reports remain stable
+   * and will not churn version control.
+   */
+  @Nonnull
+  private static List<Difference> sort( @Nonnull final Report report )
+  {
+    return report.getDifferences().stream().sorted( Main::compareDiff ).collect( Collectors.toList() );
+  }
+
+  private static int compareDiff( @Nonnull final Difference d1, @Nonnull final Difference d2 )
+  {
+    return toDescriptor( d1 ).compareTo( toDescriptor( d2 ) );
+  }
+
+  /**
+   * Produce a uniqueish stable string that should be stable between success runs.
+   */
+  @Nonnull
+  private static String toDescriptor( @Nonnull final Difference d )
+  {
+    return d.code + "-" +
+           sortKeys( d.classification )
+             .stream()
+             .map( k -> k + "=" + d.classification.get( k ) )
+             .collect( Collectors.joining( "," ) ) +
+           "-" +
+           sortKeys( d.attachments )
+             .stream()
+             .map( k -> k + "=" + d.attachments.get( k ) )
+             .collect( Collectors.joining( "," ) );
+  }
+
+  @Nonnull
+  private static <K, V> List<K> sortKeys( @Nonnull final Map<K, V> map )
+  {
+    return map.keySet()
+      .stream()
+      .sorted()
+      .collect( Collectors.toList() );
   }
 
   private static void emitDifference( @Nonnull final JsonGenerator g,
@@ -263,16 +305,16 @@ public class Main
       g.writeNull( "oldElementModule" );
     }
     g.writeStartObject( "classification" );
-    for ( final Map.Entry<CompatibilityType, DifferenceSeverity> entry : difference.classification.entrySet() )
+    for ( final CompatibilityType key : sortKeys( difference.classification ) )
     {
-      g.write( entry.getKey().name(), entry.getValue().name() );
+      g.write( key.name(), difference.classification.get( key ).name() );
     }
     g.writeEnd();
 
     g.writeStartObject( "attachments" );
-    for ( final Map.Entry<String, String> entry : difference.attachments.entrySet() )
+    for ( final String key : sortKeys( difference.attachments ) )
     {
-      g.write( entry.getKey(), entry.getValue() );
+      g.write( key, difference.attachments.get( key ) );
     }
     g.writeEnd();
 
