@@ -1,6 +1,7 @@
 # Change Log
 
-### Unreleased
+### [v0.04](https://github.com/realityforge/revapi-diff/tree/v0.04) (2019-02-13)
+[Full Changelog](https://github.com/realityforge/revapi-diff/compare/v0.03...v0.04)
 
 * Remove ignore for scala annotation from the default configuration.
 
