@@ -107,15 +107,6 @@ public class Main
     "      },\n" +
     "      \"reportUsesFor\": \"all-differences\"\n" +
     "    }\n" +
-    "  },\n" +
-    "  {\n" +
-    "    \"extension\": \"revapi.ignore\",\n" +
-    "    \"configuration\": [\n" +
-    "      {\n" +
-    "        \"code\": \"java.annotation.attributeValueChanged\",\n" +
-    "        \"annotationType\": \"scala.reflect.ScalaSignature\"\n" +
-    "      }\n" +
-    "    ]\n" +
     "  }\n" +
     "]";
 
