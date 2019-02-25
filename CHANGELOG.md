@@ -1,6 +1,7 @@
 # Change Log
 
-### Unreleased
+### [v0.05](https://github.com/realityforge/revapi-diff/tree/v0.05) (2019-02-25)
+[Full Changelog](https://github.com/realityforge/revapi-diff/compare/v0.04...v0.05)
 
 * Change the formatting of json output to use 2-space layout and to strip the leading newline.
   The goal is to make the json output easier to visually inspect.
