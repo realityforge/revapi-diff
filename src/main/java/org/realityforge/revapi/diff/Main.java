@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -185,10 +187,33 @@ public class Main
       final JsonGenerator g = Json.createGeneratorFactory( config ).createGenerator( output );
       differenceCount += emitReports( g, reports );
       g.flush();
-      output.write( "\n".getBytes() );
       g.close();
     }
+    formatJson( c_outputFile );
     return differenceCount;
+  }
+
+  /**
+   * Format the json file.
+   * This is horribly inefficient but it is not called very often so ... meh.
+   */
+  private static void formatJson( @Nonnull final File file )
+    throws IOException
+  {
+    final byte[] data = Files.readAllBytes( file.toPath() );
+    final Charset charset = Charset.forName( "UTF-8" );
+    final String jsonData = new String( data, charset );
+
+    final String output =
+      jsonData
+        .replaceAll( "(?m)^ {4}\\{", "  {" )
+        .replaceAll( "(?m)^ {4}}", "  }" )
+        .replaceAll( "(?m)^ {8}\"", "    \"" )
+        .replaceAll( "(?m)^ {8}}", "    }" )
+        .replaceAll( "(?m)^ {12}\"", "      \"" )
+        .replaceAll( "(?m)^\n\\[\n", "[\n" ) +
+      "\n";
+    Files.write( file.toPath(), output.getBytes( charset ) );
   }
 
   private static int emitReports( @Nonnull final JsonGenerator g, @Nonnull final List<Report> reports )
