@@ -304,17 +304,9 @@ public class Main
       {
         g.write( "newElement", newElement.getFullHumanReadableString() );
       }
-      else
-      {
-        g.writeNull( "newElement" );
-      }
       if ( null != oldElement )
       {
         g.write( "oldElement", oldElement.getFullHumanReadableString() );
-      }
-      else
-      {
-        g.writeNull( "oldElement" );
       }
     }
     g.writeStartObject( "classification" );
