@@ -19,15 +19,15 @@ The Maven dependency is:
 <dependency>
   <groupId>org.realityforge.revapi.diff</groupId>
   <artifactId>revapi-diff</artifactId>
-  <version>0.05</version>
+  <version>0.06</version>
   <classification>all</classification>
 </dependency>
 ```
 
-Alternatively it can be directly downloaded from [http://central.maven.org/maven2/org/realityforge/revapi/diff/revapi-diff/0.05/revapi-diff-0.05-all.jar](http://central.maven.org/maven2/org/realityforge/revapi/diff/revapi-diff/0.05/revapi-diff-0.05-all.jar)
+Alternatively it can be directly downloaded from [http://central.maven.org/maven2/org/realityforge/revapi/diff/revapi-diff/0.06/revapi-diff-0.06-all.jar](http://central.maven.org/maven2/org/realityforge/revapi/diff/revapi-diff/0.06/revapi-diff-0.06-all.jar)
 as the package has been built with all dependencies included. It is an executable jar file and can be run
-by passing it as an argument to the `java -jar revapi-diff-0.05-all.jar ...`.  To get a list of options that
-can be passed to the program run `java -jar revapi-diff-0.05-all.jar --help`.
+by passing it as an argument to the `java -jar revapi-diff-0.06-all.jar ...`.  To get a list of options that
+can be passed to the program run `java -jar revapi-diff-0.06-all.jar --help`.
 
 Although in most cases it is sufficient to pass the old api and the new api as paths as well as option for
 location of output file. The new api is the jar that you are comparing against the old api.
@@ -35,7 +35,7 @@ location of output file. The new api is the jar that you are comparing against t
 For example:
 
 ```bash
-java -jar revapi-diff-0.05-all.jar \
+java -jar revapi-diff-0.06-all.jar \
   --old-api ~/.m2/repository/org/realityforge/arez/arez-core/0.117/arez-core-0.117.jar \
   --new-api ~/.m2/repository/org/realityforge/arez/arez-core/0.127/arez-core-0.127.jar \
   --output-file report.json
@@ -47,7 +47,7 @@ the paths with the label.
 For example:
 
 ```bash
-java -jar revapi-diff-0.05-all.jar \
+java -jar revapi-diff-0.06-all.jar \
   --old-api org.realityforge.arez:arez-core:jar:0.117::~/.m2/repository/org/realityforge/arez/arez-core/0.117/arez-core-0.117.jar \
   --new-api org.realityforge.arez:arez-core:jar:0.127::~/.m2/repository/org/realityforge/arez/arez-core/0.127/arez-core-0.127.jar \
   --output-file report.json
