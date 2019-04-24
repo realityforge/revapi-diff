@@ -318,7 +318,7 @@ public class Main
     g.writeStartObject( "attachments" );
     for ( final String key : sortKeys( difference.attachments ) )
     {
-      if ( ATTACHMENT_EXCLUDES.contains( key ) )
+      if ( !ATTACHMENT_EXCLUDES.contains( key ) )
       {
         g.write( key, difference.attachments.get( key ) );
       }
