@@ -106,7 +106,7 @@ HEADER
     end
 
     stage('MavenCentralPublish', 'Publish artifacts to Maven Central') do
-      sh 'bundle exec buildr clean mcrt:publish_if_tagged TEST=no GWT=no'
+      sh 'bundle exec buildr clean mcrt:publish_if_tagged TEST=no'
     end
 
     stage('PatchChangelogPostRelease', 'Patch the changelog post release to prepare for next development iteration') do
