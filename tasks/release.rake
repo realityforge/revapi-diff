@@ -144,11 +144,14 @@ HEADER
 
       tag = "v#{ENV['PRODUCT_VERSION']}"
 
+      version_parts = ENV['PRODUCT_VERSION'].split('.')
+      prerelease = '0' == version_parts[0]
+
       require 'octokit'
 
       client = Octokit::Client.new(:netrc => true, :auto_paginate => true)
       client.login
-      client.create_release('realityforge/revapi-diff', tag, :name => tag, :body => changes, :draft => false, :prerelease => true)
+      client.create_release('realityforge/revapi-diff', tag, :name => tag, :body => changes, :draft => false, :prerelease => prerelease)
 
       candidates = client.list_milestones('realityforge/revapi-diff').select {|m| m[:title].to_s == tag}
       unless candidates.empty?
