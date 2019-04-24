@@ -1,6 +1,7 @@
 # Change Log
 
-### Unreleased
+### [v0.08](https://github.com/realityforge/revapi-diff/tree/v0.08) (2019-04-24)
+[Full Changelog](https://github.com/realityforge/revapi-diff/compare/v0.07...v0.08)
 
 * If the signature of the element has not changed then do not emit `newElement` and `oldElement` fields in the difference report and instead just emit an `element` field. This can happen if the difference is the addition of an annotation.
 * Omit the `newElement` field if there is no value rather than omitting a `null` value. Do the same for the `oldElement` field.
