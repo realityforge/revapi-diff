@@ -6,9 +6,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,7 +27,6 @@ import org.realityforge.getopt4j.CLUtil;
 import org.revapi.API;
 import org.revapi.AnalysisContext;
 import org.revapi.AnalysisResult;
-import org.revapi.Archive;
 import org.revapi.CompatibilityType;
 import org.revapi.Difference;
 import org.revapi.Element;
@@ -98,6 +101,8 @@ public class Main
   private static final int DIFFERENCE_EXIT_CODE = 1;
   private static final int ERROR_PARSING_ARGS_EXIT_CODE = 2;
   private static final int ERROR_OTHER_EXIT_CODE = 3;
+  private static final Set<String> ATTACHMENT_EXCLUDES =
+    Collections.unmodifiableSet( new HashSet<>( Arrays.asList( "newArchive", "oldArchive" ) ) );
   private static final String DEFAULT_CONFIG =
     "[\n" +
     "  {\n" +
@@ -286,40 +291,20 @@ public class Main
     final Element newElement = report.getNewElement();
     if ( null != newElement )
     {
-      final Archive archive = newElement.getArchive();
       g.write( "newElement", newElement.getFullHumanReadableString() );
-      if ( null != archive )
-      {
-        g.write( "newElementModule", archive.getName() );
-      }
-      else
-      {
-        g.writeNull( "newElementModule" );
-      }
     }
     else
     {
       g.writeNull( "newElement" );
-      g.writeNull( "newElementModule" );
     }
     final Element oldElement = report.getOldElement();
     if ( null != oldElement )
     {
-      final Archive archive = oldElement.getArchive();
       g.write( "oldElement", oldElement.getFullHumanReadableString() );
-      if ( null != archive )
-      {
-        g.write( "oldElementModule", archive.getName() );
-      }
-      else
-      {
-        g.writeNull( "oldElementModule" );
-      }
     }
     else
     {
       g.writeNull( "oldElement" );
-      g.writeNull( "oldElementModule" );
     }
     g.writeStartObject( "classification" );
     for ( final CompatibilityType key : sortKeys( difference.classification ) )
@@ -331,7 +316,10 @@ public class Main
     g.writeStartObject( "attachments" );
     for ( final String key : sortKeys( difference.attachments ) )
     {
-      g.write( key, difference.attachments.get( key ) );
+      if ( ATTACHMENT_EXCLUDES.contains( key ) )
+      {
+        g.write( key, difference.attachments.get( key ) );
+      }
     }
     g.writeEnd();
 

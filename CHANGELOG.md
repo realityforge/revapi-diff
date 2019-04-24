@@ -2,6 +2,8 @@
 
 ### Unreleased
 
+* Remove recording of the archive for each diff in both the attachments and the main packet.
+
 ### [v0.05](https://github.com/realityforge/revapi-diff/tree/v0.05) (2019-02-25)
 [Full Changelog](https://github.com/realityforge/revapi-diff/compare/v0.04...v0.05)
 
