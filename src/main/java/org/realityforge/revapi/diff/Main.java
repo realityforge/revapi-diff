@@ -291,22 +291,31 @@ public class Main
     g.write( "code", difference.code );
     g.write( "description", difference.description );
     final Element newElement = report.getNewElement();
-    if ( null != newElement )
-    {
-      g.write( "newElement", newElement.getFullHumanReadableString() );
-    }
-    else
-    {
-      g.writeNull( "newElement" );
-    }
     final Element oldElement = report.getOldElement();
-    if ( null != oldElement )
+    if ( null != oldElement &&
+         null != newElement &&
+         newElement.getFullHumanReadableString().equals( oldElement.getFullHumanReadableString() ) )
     {
-      g.write( "oldElement", oldElement.getFullHumanReadableString() );
+      g.write( "element", newElement.getFullHumanReadableString() );
     }
     else
     {
-      g.writeNull( "oldElement" );
+      if ( null != newElement )
+      {
+        g.write( "newElement", newElement.getFullHumanReadableString() );
+      }
+      else
+      {
+        g.writeNull( "newElement" );
+      }
+      if ( null != oldElement )
+      {
+        g.write( "oldElement", oldElement.getFullHumanReadableString() );
+      }
+      else
+      {
+        g.writeNull( "oldElement" );
+      }
     }
     g.writeStartObject( "classification" );
     for ( final CompatibilityType key : sortKeys( difference.classification ) )
