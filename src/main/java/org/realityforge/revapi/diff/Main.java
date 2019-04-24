@@ -285,7 +285,6 @@ public class Main
                                       @Nonnull final Difference difference )
   {
     g.writeStartObject();
-    g.write( "name", difference.name );
     g.write( "code", difference.code );
     g.write( "description", difference.description );
     final Element newElement = report.getNewElement();
