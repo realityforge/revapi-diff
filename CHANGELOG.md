@@ -1,5 +1,7 @@
 # Change Log
 
+### Unreleased
+
 ### [v0.06](https://github.com/realityforge/revapi-diff/tree/v0.06) (2019-04-24)
 [Full Changelog](https://github.com/realityforge/revapi-diff/compare/v0.05...v0.06)
 
