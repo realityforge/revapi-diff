@@ -5,6 +5,8 @@
 * Remove recording of the archive for each diff in both the attachments and the main packet.
 * Rename the name field from difference as it is never presented to the user and can be derived
   from the code if ever required.
+* Remove examples from attachments as this tool only includes api elements and thus examples
+  are completely derivable.
 
 ### [v0.05](https://github.com/realityforge/revapi-diff/tree/v0.05) (2019-02-25)
 [Full Changelog](https://github.com/realityforge/revapi-diff/compare/v0.04...v0.05)

@@ -102,7 +102,10 @@ public class Main
   private static final int ERROR_PARSING_ARGS_EXIT_CODE = 2;
   private static final int ERROR_OTHER_EXIT_CODE = 3;
   private static final Set<String> ATTACHMENT_EXCLUDES =
-    Collections.unmodifiableSet( new HashSet<>( Arrays.asList( "newArchive", "oldArchive" ) ) );
+    Collections.unmodifiableSet( new HashSet<>( Arrays.asList( "exampleUseChainInNewApi",
+                                                               "exampleUseChainInOldApi",
+                                                               "newArchive",
+                                                               "oldArchive" ) ) );
   private static final String DEFAULT_CONFIG =
     "[\n" +
     "  {\n" +
