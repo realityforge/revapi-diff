@@ -2,7 +2,7 @@
 
 ### Unreleased
 
-* Upgrade the `org.realityforge.getopt4j` artifact to version `0.3`.
+* Upgrade the `org.realityforge.getopt4j` artifact to version `1.3`.
 
 ### [v0.08](https://github.com/realityforge/revapi-diff/tree/v0.08) (2019-04-24)
 [Full Changelog](https://github.com/realityforge/revapi-diff/compare/v0.07...v0.08)
