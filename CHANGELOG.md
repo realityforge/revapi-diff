@@ -2,6 +2,7 @@
 
 ### Unreleased
 
+* Upgrade the `org.realityforge.javax.annotation` artifact to version `1.0.1`.
 * Upgrade the `org.realityforge.getopt4j` artifact to version `1.3`.
 
 ### [v0.08](https://github.com/realityforge/revapi-diff/tree/v0.08) (2019-04-24)
