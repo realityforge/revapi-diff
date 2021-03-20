@@ -1,6 +1,8 @@
 require 'buildr/git_auto_version'
 require 'buildr/gpg'
 
+Buildr::MavenCentral.define_publish_tasks(:profile_name => 'org.realityforge', :username => 'realityforge')
+
 desc 'revapi-diff: Report differences between Java APIs'
 define 'revapi-diff' do
   project.group = 'org.realityforge.revapi.diff'
