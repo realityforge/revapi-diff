@@ -2,6 +2,7 @@
 
 ### Unreleased
 
+* Update the `org.realityforge.javax.annotation` artifact to version `1.1.1`.
 * Upgrade the `org.realityforge.javax.annotation` artifact to version `1.0.1`.
 * Upgrade the `org.realityforge.getopt4j` artifact to version `1.3`.
 
